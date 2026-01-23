@@ -28,8 +28,8 @@ You will also need a wordlist. The script defaults to:
 
 1. **Clone the repository:**
 ```bash
-git clone https://github.com/yourusername/autorecon-fuzzer.git
-cd autorecon-fuzzer
+git clone https://github.com/sprasannasrinivasan/Reconnaissance.git
+cd Reconnaissance
 
 ```
 
