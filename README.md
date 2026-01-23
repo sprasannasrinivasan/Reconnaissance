@@ -1,45 +1,75 @@
-# Fast Recon: Masscan + Nmap Automator
+# AutoRecon Fuzzer
 
-A high-speed port discovery and service enumeration script. This tool leverages the extreme speed of **Masscan** to identify open ports across the full TCP range (0-65535) and then pipes those specific ports into **Nmap** for deep aggressive scanning (`-A`).
+A lightweight Bash automation script designed for rapid reconnaissance. It chains high-speed port scanning with service fingerprinting and web directory fuzzing.
 
-## 🚀 How It Works
+### 🚀 Workflow
 
-Scanning 65,535 ports with Nmap alone is time-consuming. This script optimizes the workflow:
+1. **Masscan**: Scans all 65,535 TCP ports at high speed (`10,000 p/s`).
+2. **Nmap**: Performs service version detection (`-sV`) only on the open ports identified by Masscan.
+3. **Service Filtering**: Automatically identifies HTTP/HTTPS services.
+4. **ffuf**: Launches directory brute-forcing against discovered web services using a specified wordlist.
 
-1. **Masscan Phase:** Rapidly identifies any "live" TCP ports at a rate of 10,000 packets/sec.
-2. **Parsing Phase:** Extracts the specific open ports and formats them for Nmap.
-3. **Nmap Phase:** Runs a detailed scan (Service Versioning, Script Scanning, OS Detection) *only* on the ports found in Phase 1.
+---
 
-## 📋 Prerequisites
+### 🛠️ Prerequisites
 
-Ensure you have the following tools installed on your Kali/Linux system:
+Ensure the following tools are installed and available in your `$PATH`:
 
-* **Masscan:** `sudo apt install masscan`
-* **Nmap:** `sudo apt install nmap`
+* `masscan`
+* `nmap`
+* `ffuf`
 
-## 🛠 Usage
+You will also need a wordlist. The script defaults to:
+`/usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-big.txt`
 
-Give the script execution permissions and run it by passing one or more target IP addresses.
+---
 
+### 📦 Installation & Setup
+
+1. **Clone the repository:**
+```bash
+git clone https://github.com/yourusername/autorecon-fuzzer.git
+cd autorecon-fuzzer
+
+```
+
+
+2. **Make the script executable:**
 ```bash
 chmod +x fast-recon.sh
-sudo ./fast-recon.sh <Target-IP> <Target-IP-2>
 
 ```
 
-> **Note:** `sudo` is required because Masscan uses a custom TCP/IP stack to achieve high speeds.
 
-## 📂 Output Structure
+3. **Update the Wordlist Path (Optional):**
+Open `fast-recon.sh` and edit the `WORDLIST` variable to point to your local SecLists or custom wordlist.
 
-The script creates a dedicated directory for each target to keep your workspace organized:
+---
+
+### 📖 Usage
+
+Run the script by providing one or more IP addresses as arguments. Since Masscan requires raw socket access, you may be prompted for sudo privileges.
+
+```bash
+sudo ./fast-recon.sh 192.168.1.1 10.0.0.50
+
+```
+
+#### Output Structure
+
+The script creates a dedicated directory for every target to keep results organized:
 
 ```text
-scan_<Target-IP>/
-├── masscan_<Target-IP>.txt   # Greppable Masscan results
-└── nmap_<Target-IP>.txt      # Human-readable Nmap report
+.
+├── scan_192.168.1.1/
+│   ├── masscan_192.168.1.1.txt    # Raw Masscan grepable output
+│   ├── nmap_192.168.1.1.gnmap      # Nmap service detection results
+│   └── ffuf_192.168.1.1.txt        # Final fuzzing results (Markdown format)
 
 ```
 
-## ⚠️ Disclaimer
+---
 
-This tool is for educational and authorized security testing purposes only. Scanning networks you do not have explicit permission to test is illegal.
+### ⚠️ Disclaimer
+
+This tool is intended for **authorized security auditing and educational purposes only**. Unauthorized scanning of remote systems is illegal. The user assumes all responsibility for the use of this software.
