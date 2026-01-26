@@ -19,8 +19,8 @@ for TARGET in "$@"; do
     mkdir -p "$OUTDIR"
 
     MASSCAN_OUT="$OUTDIR/masscan_$TARGET.txt"
-    NMAP_TXT="$OUTDIR/nmap_$TARGET.txt"
-    NMAP_GNMAP="$OUTDIR/nmap_$TARGET.gnmap"
+    NMAP_OUTPUT="$OUTDIR/nmap_$TARGET"
+    NMAP_GNMAP="$NMAP_OUTPUT/$NMAP_OUTPUT.gnmap"
     FFUF_FINAL_OUT="$OUTDIR/ffuf_$TARGET.txt"
 
     # Initialize/Clear the final output file
@@ -39,7 +39,7 @@ for TARGET in "$@"; do
 
     echo "[+] Open ports found: $ports"
     echo "[+] Running Nmap service detection..."
-    nmap -sV -p "$ports" "$TARGET" -oN "$NMAP_TXT" -oG "$NMAP_GNMAP"
+    nmap -sV -p "$ports" "$TARGET" -oA "$NMAP_OUTPUT"
 
     # Extract only ports identified as 'http' or 'https'
     HTTP_PORTS=$(grep "/open/tcp//http" "$NMAP_GNMAP" | grep -oP '\d+(?=/open/tcp//http)')
