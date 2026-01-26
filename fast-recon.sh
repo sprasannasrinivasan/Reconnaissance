@@ -20,7 +20,7 @@ for TARGET in "$@"; do
 
     MASSCAN_OUT="$OUTDIR/masscan_$TARGET.txt"
     NMAP_OUTPUT="$OUTDIR/nmap_$TARGET"
-    NMAP_GNMAP="$NMAP_OUTPUT/$NMAP_OUTPUT.gnmap"
+    NMAP_GNMAP="$NMAP_OUTPUT.gnmap"
     FFUF_FINAL_OUT="$OUTDIR/ffuf_$TARGET.txt"
 
     # Initialize/Clear the final output file
