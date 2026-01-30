@@ -39,7 +39,7 @@ for TARGET in "$@"; do
 
     echo "[+] Open ports found: $ports"
     echo "[+] Running Nmap service detection..."
-    nmap -sV -p "$ports" "$TARGET" -oA "$NMAP_OUTPUT"
+    nmap -A -sS -sV -sC -p "$ports" "$TARGET" -oA "$NMAP_OUTPUT"
 
     # Extract only ports identified as 'http' or 'https'
     HTTP_PORTS=$(grep "/open/tcp//http" "$NMAP_GNMAP" | grep -oP '\d+(?=/open/tcp//http)')
