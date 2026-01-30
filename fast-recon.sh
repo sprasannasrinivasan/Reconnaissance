@@ -3,6 +3,15 @@
 # Configuration - Update the wordlist path to your preference
 WORDLIST="/usr/share/seclists/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-big.txt"
 
+# Check if the file does NOT exist
+if [ ! -f "$WORDLIST" ]; then
+    echo "[-] Error: Wordlist not found at $WORDLIST"
+    echo "[!] Please install SecLists or check the path."
+    exit 1
+fi
+
+echo "[+] Wordlist found. Proceeding with the script..."
+
 # Check if at least one IP was provided
 if [ "$#" -lt 1 ]; then
     echo "Usage: $0 <ip1> <ip2> <ip3> ..."
